@@ -2,11 +2,11 @@ package storage
 
 import (
 	"os"
-	"replayAnalyzer/models"
+	"replayAnalyzer/utils"
 )
 
 var ReplayCache []string
-var LeaderboardCache []*models.ALeaderboard
+var LeaderboardCache []*utils.ALeaderboard
 
 func Load() error {
 

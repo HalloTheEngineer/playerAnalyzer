@@ -1,10 +1,23 @@
-package models
+package utils
+
+import (
+	"fmt"
+	"github.com/sajari/regression"
+	"gonum.org/v1/plot/plotter"
+)
 
 const (
-	BeatleaderApiUrl = "https://api.beatleader.com"
+	BeatLeaderApiUrl    = "https://api.beatleader.com"
+	BeatLeaderScoresUrl = BeatLeaderApiUrl + "/player/%s/scores"
 
-	JDConfigLow  = 5.0
+	BeatLeaderDefaultScoreParams = "?sortBy=date&order=desc&page=1&count=64&diff=%s&mode=Standard&requirements=none&scoreStatus=none&leaderboardContext=general&type=ranked&includeIO=false"
+
+	JDConfigLow  = 8.0
 	JDConfigHigh = 26.0
+)
+
+var (
+	BLDifficulties = []string{"Easy", "Normal", "Hard", "Expert", "ExpertPlus"}
 )
 
 type (
@@ -24,6 +37,15 @@ type (
 	JDPair struct {
 		NJS float64 `json:"njs"`
 		JD  float64 `json:"jumpDistance"`
+	}
+
+	Point struct {
+		X float64
+		Y float64
+	}
+	Cluster struct {
+		Points []plotter.XY
+		Model  *regression.Regression
 	}
 
 	ALeaderboard struct {
@@ -74,3 +96,7 @@ type (
 		Requirements   int     `json:"requirements"`
 	}
 )
+
+func (p JDPair) ToString() string {
+	return fmt.Sprintf("NJS:%f  JD:%f", p.NJS, p.JD)
+}

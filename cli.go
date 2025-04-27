@@ -15,6 +15,12 @@ func createRunner() (runner *acmd.Runner) {
 			ExecFunc:    handleFetchCmd,
 		},
 		{
+			Name:        "cleanup",
+			Alias:       "c",
+			Description: "Runs a cleanup",
+			ExecFunc:    handleCleanupCmd,
+		},
+		{
 			Name:        "generate",
 			Alias:       "g",
 			Description: "Generates something based on the provided arguments",

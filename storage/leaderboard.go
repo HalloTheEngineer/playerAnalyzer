@@ -2,13 +2,14 @@ package storage
 
 import (
 	"encoding/json"
+	"log/slog"
 	"os"
 	"path/filepath"
-	"replayAnalyzer/models"
+	"replayAnalyzer/utils"
 	"strings"
 )
 
-func SaveLeaderboard(leaderboard *models.ALeaderboard) error {
+func SaveLeaderboard(leaderboard *utils.ALeaderboard) error {
 	nBytes, err := json.MarshalIndent(leaderboard, "", "  ")
 	if err != nil {
 		return err
@@ -20,8 +21,8 @@ func SaveLeaderboard(leaderboard *models.ALeaderboard) error {
 	}
 	return nil
 }
-func LoadLeaderboard(name string) (*models.ALeaderboard, error) {
-	var leaderboard models.ALeaderboard
+func LoadLeaderboard(name string) (*utils.ALeaderboard, error) {
+	var leaderboard utils.ALeaderboard
 
 	bytes, err := os.ReadFile(filepath.Join("_cache/leaderboards", name))
 	if err != nil {
@@ -35,11 +36,19 @@ func LoadLeaderboard(name string) (*models.ALeaderboard, error) {
 	return &leaderboard, nil
 }
 
-func GetDiff(hash, diff string) *models.ADifficulty {
+func GetDiff(hash, diff string) *utils.ADifficulty {
+	hash = strings.ToLower(hash)
+	hash = strings.Split(hash, " ")[0]
+
+	if strings.ContainsRune(hash, '_') {
+		hash = hash[:strings.IndexRune(hash, '_')]
+	}
+
 	for _, leaderboard := range LeaderboardCache {
-		if strings.ToLower(leaderboard.Song.Hash) == strings.ToLower(hash) && strings.ToLower(leaderboard.Difficulty.DifficultyName) == strings.ToLower(diff) {
+		if strings.ToLower(strings.Split(leaderboard.Song.Hash, " ")[0]) == hash && strings.ToLower(leaderboard.Difficulty.DifficultyName) == strings.ToLower(diff) {
 			return &leaderboard.Difficulty
 		}
 	}
+	slog.Info(hash)
 	return nil
 }

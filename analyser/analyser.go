@@ -3,7 +3,7 @@ package analyser
 import (
 	"github.com/motzel/go-bsor/bsor"
 	"math"
-	"replayAnalyzer/models"
+	"replayAnalyzer/utils"
 )
 
 func AverageSwingDistance(frames []*bsor.PositionAndRotation) float64 {
@@ -59,7 +59,7 @@ func EstimateGripStyle(leftFrames, rightFrames []*bsor.PositionAndRotation) stri
 	}
 	return "Wide Grip"
 }
-func AnalyzeControllers(frames []bsor.Frame) models.AnalysisResult {
+func AnalyzeControllers(frames []bsor.Frame) utils.AnalysisResult {
 	var left []*bsor.PositionAndRotation
 	var right []*bsor.PositionAndRotation
 
@@ -77,7 +77,7 @@ func AnalyzeControllers(frames []bsor.Frame) models.AnalysisResult {
 	} else if rightAvg > leftAvg*1.1 {
 		dominant = "Right"
 	}
-	return models.AnalysisResult{
+	return utils.AnalysisResult{
 		DominantHand:         dominant,
 		AvgSwingDistanceL:    leftAvg,
 		AvgSwingDistanceR:    rightAvg,
