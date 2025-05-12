@@ -137,12 +137,12 @@ func GenerateJDConfig(playerId string) error {
 	}
 	utils.OpenFile(plotPath)
 
-	for _, cluster := range clusters {
+	for i, cluster := range clusters {
 		bts, err := buildJDConfig(cluster.Model)
 		if err != nil {
 			return err
 		}
-		jdPath := fmt.Sprintf("_cache/jd_configs/%s_%s.json", playerId, utils.RandomStr(4))
+		jdPath := fmt.Sprintf("_cache/jd_configs/%s_c%d_%s.json", playerId, i+1, utils.RandomStr(4))
 		_ = os.WriteFile(jdPath, *bts, 0666)
 		slog.Info(fmt.Sprintf("Check \"%s\" for generated jd config", jdPath))
 	}
