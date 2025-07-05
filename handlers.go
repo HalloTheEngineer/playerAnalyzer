@@ -75,7 +75,14 @@ func handleJDGenCmd(ctx context.Context, args []string) (err error) {
 		}
 	}
 
-	err = logic.GenerateJDConfig(playerId)
+	slog.Info("Fetching player info")
+
+	player, err := utils.FetchToStruct[utils.SSPlayer](fmt.Sprintf("https://scoresaber.com/api/player/%s/basic", playerId))
+	if err != nil {
+		return err
+	}
+
+	err = logic.GenerateJDConfig(player)
 	if err != nil {
 		return err
 	}

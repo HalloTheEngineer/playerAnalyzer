@@ -18,10 +18,10 @@ import (
 	"sort"
 )
 
-func GenerateJDConfig(playerId string) error {
+func GenerateJDConfig(player *utils.SSPlayer) error {
 	slog.Info("Loading player's replays...")
 
-	replays, err := storage.GetReplays(playerId)
+	replays, err := storage.GetReplays(player.Id)
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func GenerateJDConfig(playerId string) error {
 	var points plotter.XYs
 
 	for _, fileName := range *replays {
-		point, err := buildJDPoint(playerId, fileName)
+		point, err := buildJDPoint(player, fileName)
 		if err != nil {
 			return err
 		}
@@ -48,6 +48,13 @@ func GenerateJDConfig(playerId string) error {
 	// Grouping
 	clusters := make([]utils.Cluster, 0)
 	pointClusters := utils.KMeans(points, 2, 300)
+
+	for i := range pointClusters {
+		for j := 0; j < 1; j++ {
+			pointClusters[i] = append(pointClusters[i], plotter.XY{X: 0, Y: 0})
+		}
+	}
+
 	if len(pointClusters) > 3 {
 		return errors.New("too many grouped pairs, this is odd")
 	}
@@ -130,7 +137,7 @@ func GenerateJDConfig(playerId string) error {
 		p.Legend.Add(fmt.Sprintf("Cluster %d (R² = %.4f)", i+1, cluster.Model.R2), l)
 	}
 
-	plotPath := "_cache/plots/" + playerId + ".jpg"
+	plotPath := fmt.Sprintf("_cache/plots/%s-%s.jpg", player.Id, player.Name)
 	err = p.Save(6*vg.Inch, 6*vg.Inch, plotPath)
 	if err != nil {
 		return err
@@ -142,22 +149,22 @@ func GenerateJDConfig(playerId string) error {
 		if err != nil {
 			return err
 		}
-		jdPath := fmt.Sprintf("_cache/jd_configs/%s_c%d_%s.json", playerId, i+1, utils.RandomStr(4))
+		jdPath := fmt.Sprintf("_cache/jd_configs/%s-%s-c%d_%s.json", player.Id, player.Name, i+1, utils.RandomStr(4))
 		_ = os.WriteFile(jdPath, *bts, 0666)
 		slog.Info(fmt.Sprintf("Check \"%s\" for generated jd config", jdPath))
 	}
 	return nil
 }
 
-func buildJDPoint(playerId, fileName string) (*plotter.XY, error) {
-	file, err := os.OpenFile("_replays/"+playerId+"/"+fileName, os.O_RDONLY, 0755)
+func buildJDPoint(player *utils.SSPlayer, fileName string) (*plotter.XY, error) {
+	file, err := os.OpenFile("_replays/"+player.Id+"/"+fileName, os.O_RDONLY, 0755)
 	if err != nil {
 		return nil, err
 	}
 
 	replay, err := bsor.Read(file)
 	if err != nil {
-		slog.Info(fmt.Sprintf("Error reading replay file: %s/%s", playerId, fileName))
+		slog.Info(fmt.Sprintf("Error reading replay file: %s/%s", player.Id, fileName))
 		return nil, err
 	}
 

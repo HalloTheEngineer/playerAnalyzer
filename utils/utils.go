@@ -2,8 +2,11 @@ package utils
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
+	"io"
 	"math/rand"
+	"net/http"
 	"os"
 	"os/exec"
 	"regexp"
@@ -46,6 +49,26 @@ func OpenFile(dir string) {
 		dir = strings.ReplaceAll(dir, "/", "\\")
 		_ = exec.Command("explorer", dir).Start()
 	}
+}
+
+func FetchToStruct[T any](url string) (*T, error) {
+	replayResp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	bytes, err := io.ReadAll(replayResp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var str T
+
+	err = json.Unmarshal(bytes, &str)
+	if err != nil {
+		return nil, err
+	}
+
+	return &str, nil
 }
 
 func Map[T, V any](ts []T, fn func(T) V) []V {
