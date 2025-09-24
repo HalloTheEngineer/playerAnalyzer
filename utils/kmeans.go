@@ -4,9 +4,10 @@ package utils
 
 import (
 	"fmt"
+	"math"
+
 	"github.com/sajari/regression"
 	"gonum.org/v1/plot/plotter"
-	"math"
 )
 
 // KMeans performs k-means clustering on the data points

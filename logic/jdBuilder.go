@@ -4,24 +4,24 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/motzel/go-bsor/bsor"
-	"github.com/sajari/regression"
-	"gonum.org/v1/plot"
-	"gonum.org/v1/plot/plotter"
-	"gonum.org/v1/plot/vg"
-	"gonum.org/v1/plot/vg/draw"
 	"image/color"
 	"log/slog"
 	"os"
 	"replayAnalyzer/storage"
 	"replayAnalyzer/utils"
 	"sort"
+
+	"github.com/sajari/regression"
+	"gonum.org/v1/plot"
+	"gonum.org/v1/plot/plotter"
+	"gonum.org/v1/plot/vg"
+	"gonum.org/v1/plot/vg/draw"
 )
 
-func GenerateJDConfig(player *utils.SSPlayer) error {
+func GenerateJDConfig(player *utils.SSPlayer, count int, sortOrder string) error {
 	slog.Info("Loading player's replays...")
 
-	replays, err := storage.GetReplays(player.Id)
+	stats, err := storage.FetchStats(player.Id, count, sortOrder)
 	if err != nil {
 		return err
 	}
@@ -30,14 +30,14 @@ func GenerateJDConfig(player *utils.SSPlayer) error {
 
 	var points plotter.XYs
 
-	for _, fileName := range *replays {
-		point, err := buildJDPoint(player, fileName)
-		if err != nil {
-			return err
-		}
-		points = append(points, *point)
+	for _, res := range stats {
+		points = append(points, plotter.XY{
+			X: res.BLLead.Difficulty.Njs,
+			Y: res.Stats.WinTracker.JumpDistance,
+		})
 	}
 
+	slog.Info(fmt.Sprintf("Found %d plays", len(stats)))
 	if len(points) < 50 {
 		slog.Info("WARNING: Please note that the reliability of the model increases with more training data and a wider range of maps. " +
 			"Consider fetching more replays with different njs values.")
@@ -156,32 +156,6 @@ func GenerateJDConfig(player *utils.SSPlayer) error {
 	return nil
 }
 
-func buildJDPoint(player *utils.SSPlayer, fileName string) (*plotter.XY, error) {
-	file, err := os.OpenFile("_replays/"+player.Id+"/"+fileName, os.O_RDONLY, 0755)
-	if err != nil {
-		return nil, err
-	}
-
-	replay, err := bsor.Read(file)
-	if err != nil {
-		slog.Info(fmt.Sprintf("Error reading replay file: %s/%s", player.Id, fileName))
-		return nil, err
-	}
-
-	diff := storage.GetDiff(replay.Info.Hash, replay.Info.Difficulty)
-	if diff == nil {
-		return nil, errors.New(fmt.Sprintf("can't find leaderboard for %s and %s", replay.Info.Hash, replay.Info.Difficulty))
-	}
-
-	pair := plotter.XY{
-		X: diff.Njs,
-		Y: float64(replay.Info.JumpDistance),
-	}
-
-	_ = file.Close()
-
-	return &pair, nil
-}
 func buildJDConfig(reg *regression.Regression) (*[]byte, error) {
 	var configPairs []utils.JDPair
 	var njs = utils.JDConfigLow
@@ -198,7 +172,7 @@ func buildJDConfig(reg *regression.Regression) (*[]byte, error) {
 			JD:  predictedJD,
 		})
 
-		njs += 0.5
+		njs += 0.25
 	}
 	bytes, err := json.MarshalIndent(configPairs, "", "   ")
 	if err != nil {

@@ -3,6 +3,7 @@ package utils
 import (
 	"bufio"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"math/rand"
@@ -11,6 +12,7 @@ import (
 	"os/exec"
 	"regexp"
 	"runtime"
+	"strconv"
 	"strings"
 )
 
@@ -59,6 +61,9 @@ func FetchToStruct[T any](url string) (*T, error) {
 	bytes, err := io.ReadAll(replayResp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if replayResp.StatusCode != 200 {
+		return nil, errors.New(strconv.Itoa(replayResp.StatusCode))
 	}
 
 	var str T

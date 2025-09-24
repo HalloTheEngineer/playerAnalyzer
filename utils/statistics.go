@@ -1,10 +1,11 @@
 package utils
 
 import (
-	"github.com/sajari/regression"
-	"gonum.org/v1/plot/plotter"
 	"math"
 	"sort"
+
+	"github.com/sajari/regression"
+	"gonum.org/v1/plot/plotter"
 )
 
 func RemoveOutliers(data []plotter.XY, k float64) []plotter.XY {
