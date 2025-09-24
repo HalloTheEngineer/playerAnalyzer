@@ -1,4 +1,4 @@
-# ReplayAnalyzer (for BL Replays)
+# PlayerAnalyzer
 
 ## Info
 
@@ -16,3 +16,9 @@ I made this small project in my free time; it certainly is not perfect.
 - `generate`
   - `jd-config [optional player id]` - generates a config approximation
 - `help` - displays a help message
+
+## Examples
+
+### JD Config Generation
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)

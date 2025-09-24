@@ -7,8 +7,8 @@ import (
 	"image/color"
 	"log/slog"
 	"os"
-	"replayAnalyzer/storage"
-	"replayAnalyzer/utils"
+	"playerAnalyzer/storage"
+	"playerAnalyzer/utils"
 	"sort"
 
 	"github.com/sajari/regression"
@@ -149,7 +149,7 @@ func GenerateJDConfig(player *utils.SSPlayer, count int, sortOrder string) error
 		if err != nil {
 			return err
 		}
-		jdPath := fmt.Sprintf("_cache/jd_configs/%s-%s-c%d_%s.json", player.Id, player.Name, i+1, utils.RandomStr(4))
+		jdPath := fmt.Sprintf("_cache/jd_configs/%s-%s-%s-v%d_%s.json", player.Id, player.Name, sortOrder, i+1, utils.RandomStr(4))
 		_ = os.WriteFile(jdPath, *bts, 0666)
 		slog.Info(fmt.Sprintf("Check \"%s\" for generated jd config", jdPath))
 	}

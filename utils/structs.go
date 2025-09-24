@@ -375,7 +375,7 @@ type (
 			Pp                    float64     `json:"pp"`
 			Weight                float64     `json:"weight"`
 			Modifiers             string      `json:"modifiers"`
-			Multiplier            int         `json:"multiplier"`
+			Multiplier            float64     `json:"multiplier"`
 			BadCuts               int         `json:"badCuts"`
 			MissedNotes           int         `json:"missedNotes"`
 			MaxCombo              int         `json:"maxCombo"`

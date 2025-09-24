@@ -3,7 +3,7 @@ package storage
 import (
 	"fmt"
 	"log/slog"
-	"replayAnalyzer/utils"
+	"playerAnalyzer/utils"
 )
 
 const ssScoresUrl = "https://scoresaber.com/api/player/%s/scores?limit=%d&sort=%s&page=%d&withMetadata=true"

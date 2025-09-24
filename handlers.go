@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
-	"replayAnalyzer/logic"
-	"replayAnalyzer/utils"
+	"playerAnalyzer/logic"
+	"playerAnalyzer/utils"
 	"strconv"
 )
 

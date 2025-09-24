@@ -1,0 +1,146 @@
+[
+   {
+      "njs": 8,
+      "jumpDistance": 8.950735780334124
+   },
+   {
+      "njs": 8.5,
+      "jumpDistance": 9.060224951590543
+   },
+   {
+      "njs": 9,
+      "jumpDistance": 9.167718182170121
+   },
+   {
+      "njs": 9.5,
+      "jumpDistance": 9.278961875211335
+   },
+   {
+      "njs": 10,
+      "jumpDistance": 9.399124594119531
+   },
+   {
+      "njs": 10.5,
+      "jumpDistance": 9.532797062566921
+   },
+   {
+      "njs": 11,
+      "jumpDistance": 9.683992164492608
+   },
+   {
+      "njs": 11.5,
+      "jumpDistance": 9.856144944102539
+   },
+   {
+      "njs": 12,
+      "jumpDistance": 10.052112605869556
+   },
+   {
+      "njs": 12.5,
+      "jumpDistance": 10.27417451453339
+   },
+   {
+      "njs": 13,
+      "jumpDistance": 10.524032195100583
+   },
+   {
+      "njs": 13.5,
+      "jumpDistance": 10.802809332844603
+   },
+   {
+      "njs": 14,
+      "jumpDistance": 11.111051773305768
+   },
+   {
+      "njs": 14.5,
+      "jumpDistance": 11.448727522291303
+   },
+   {
+      "njs": 15,
+      "jumpDistance": 11.815226745875211
+   },
+   {
+      "njs": 15.5,
+      "jumpDistance": 12.20936177039852
+   },
+   {
+      "njs": 16,
+      "jumpDistance": 12.62936708246896
+   },
+   {
+      "njs": 16.5,
+      "jumpDistance": 13.072899328961263
+   },
+   {
+      "njs": 17,
+      "jumpDistance": 13.537037317016967
+   },
+   {
+      "njs": 17.5,
+      "jumpDistance": 14.018282014044516
+   },
+   {
+      "njs": 18,
+      "jumpDistance": 14.512556547719193
+   },
+   {
+      "njs": 18.5,
+      "jumpDistance": 15.015206205983176
+   },
+   {
+      "njs": 19,
+      "jumpDistance": 15.52099843704552
+   },
+   {
+      "njs": 19.5,
+      "jumpDistance": 16.024122849382138
+   },
+   {
+      "njs": 20,
+      "jumpDistance": 16.51819121173581
+   },
+   {
+      "njs": 20.5,
+      "jumpDistance": 16.99623745311621
+   },
+   {
+      "njs": 21,
+      "jumpDistance": 17.450717662799846
+   },
+   {
+      "njs": 21.5,
+      "jumpDistance": 17.873510090330143
+   },
+   {
+      "njs": 22,
+      "jumpDistance": 18.25591514551742
+   },
+   {
+      "njs": 22.5,
+      "jumpDistance": 18.588655398438732
+   },
+   {
+      "njs": 23,
+      "jumpDistance": 18.861875579438177
+   },
+   {
+      "njs": 23.5,
+      "jumpDistance": 19.065142579126586
+   },
+   {
+      "njs": 24,
+      "jumpDistance": 19.18744544838178
+   },
+   {
+      "njs": 24.5,
+      "jumpDistance": 19.217195398348423
+   },
+   {
+      "njs": 25,
+      "jumpDistance": 19.142225800438013
+   },
+   {
+      "njs": 25.5,
+      "jumpDistance": 18.949792186328807
+   }
+]
