@@ -1,6 +1,9 @@
 package models
 
-import "strconv"
+import (
+	"log/slog"
+	"strconv"
+)
 
 type Settings struct {
 	Count  int
@@ -8,10 +11,10 @@ type Settings struct {
 	Ranked bool
 }
 
-func (s Settings) SetRanked(c string) {
+func (s *Settings) SetRanked(c string) {
 	s.Ranked = c != "false"
 }
-func (s Settings) SetSort(c string) {
+func (s *Settings) SetSort(c string) {
 	switch c {
 	case "1":
 		s.Sort = "top"
@@ -21,7 +24,7 @@ func (s Settings) SetSort(c string) {
 		s.Sort = "top"
 	}
 }
-func (s Settings) SetCount(c string) {
+func (s *Settings) SetCount(c string) {
 	lCount, err := strconv.Atoi(c)
 	if err != nil {
 		s.Count = 100
