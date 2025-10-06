@@ -3,6 +3,7 @@ package storage
 import (
 	"fmt"
 	"log/slog"
+	"playerAnalyzer/models"
 	"playerAnalyzer/utils"
 )
 
@@ -13,16 +14,20 @@ const statsUrl = "https://cdn.scorestats.beatleader.com/%d.json"
 
 // scoresaber scores > songHash + difficulty + gameMode > bl /leaderboard/hash/diff/mode > score > id > stats
 
-func FetchStats(playerId string, count int, sortOrder string) ([]*utils.StatsResult, error) {
+func FetchStats(playerId string, settings models.Settings) ([]*utils.StatsResult, error) {
 	var res []*utils.StatsResult
 
-	ssScores, err := fetchAllScores(playerId, count, sortOrder)
+	ssScores, err := fetchAllScores(playerId, settings.Count, settings.Sort)
 	if err != nil {
 		return nil, err
 	}
 	slog.Info(fmt.Sprintf("Fetched %d scores of %s", len(ssScores.PlayerScores), playerId))
 
 	for i, score := range ssScores.PlayerScores {
+		if settings.Ranked && !score.Leaderboard.Ranked {
+			continue
+		}
+
 		slog.Info(fmt.Sprintf("(%d) - %s", i+1, score.Leaderboard.SongName))
 		// Fetching concrete BL play by criteria
 		blScore, err := utils.FetchToStruct[utils.BLScore](fmt.Sprintf(blSpecScoreUrl, playerId, score.Leaderboard.SongHash, formatSSDiff(score.Leaderboard.Difficulty.Difficulty)))

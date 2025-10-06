@@ -7,6 +7,7 @@ import (
 	"image/color"
 	"log/slog"
 	"os"
+	"playerAnalyzer/models"
 	"playerAnalyzer/storage"
 	"playerAnalyzer/utils"
 	"sort"
@@ -18,10 +19,10 @@ import (
 	"gonum.org/v1/plot/vg/draw"
 )
 
-func GenerateJDConfig(player *utils.SSPlayer, count int, sortOrder string) error {
+func GenerateJDConfig(player *utils.SSPlayer, settings models.Settings) error {
 	slog.Info("Loading player's replays...")
 
-	stats, err := storage.FetchStats(player.Id, count, sortOrder)
+	stats, err := storage.FetchStats(player.Id, settings)
 	if err != nil {
 		return err
 	}
@@ -149,7 +150,7 @@ func GenerateJDConfig(player *utils.SSPlayer, count int, sortOrder string) error
 		if err != nil {
 			return err
 		}
-		jdPath := fmt.Sprintf("_cache/jd_configs/%s-%s-%s-v%d_%s.json", player.Id, player.Name, sortOrder, i+1, utils.RandomStr(4))
+		jdPath := fmt.Sprintf("_cache/jd_configs/%s-%s-%s-v%d_%s.json", player.Id, player.Name, settings.Sort, i+1, utils.RandomStr(4))
 		_ = os.WriteFile(jdPath, *bts, 0666)
 		slog.Info(fmt.Sprintf("Check \"%s\" for generated jd config", jdPath))
 	}
