@@ -21,4 +21,6 @@ I made this small project in my free time; it certainly is not perfect.
 
 ### JD Config Generation
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![bytesy-jd](https://github.com/HalloTheEngineer/playerAnalyzer/blob/master/example/2169974796454690-Bytesy.jpg?raw=true?raw=true)
+
+[jd approximation for bytesy](https://github.com/HalloTheEngineer/playerAnalyzer/blob/master/example/2169974796454690-Bytesy-c1_ighv.json)
